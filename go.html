@@ -66,15 +66,27 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
   var TARGET='https://lunatalks975-cell.github.io/mysite/';
   var INTENT='intent://lunatalks975-cell.github.io/mysite/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(TARGET)+';end';
   var ua=navigator.userAgent||'';
-  var isAndroid=/Android/i.test(ua);
+  /* Robust platform check: Bigo and other in-app WebViews may send unusual
+     UAs. Only auto-redirect on CLEAR desktop browsers; every other UA
+     (Android, iOS, unknown/custom WebView) gets the button bridge. */
   var isIOS=/iPhone|iPad|iPod/i.test(ua);
+  var isDesktop=/Windows NT|Macintosh|Mac OS X|Linux x86_64|X11/i.test(ua)
+    && !/Mobile|Android|iPhone|iPad|iPod|wv/i.test(ua);
   function show(id){document.getElementById(id).classList.remove('hide');}
   function hide(id){document.getElementById(id).classList.add('hide');}
 
-  if(isAndroid){
-    /* Two clear paths: break out to Chrome (intent:, works where the host
-       app cooperates), or continue right here. If the Chrome tap leaves us
-       stuck (raw WebView like some in-app browsers), show copy fallback. */
+  if(isDesktop){
+    /* Clear desktop browser → straight to the landing page */
+    show('v-desktop');
+    setTimeout(function(){location.replace(TARGET);},400);
+  }else if(isIOS){
+    show('v-ios');
+    document.getElementById('iosBtn').href=TARGET;
+  }else{
+    /* Android, unknown mobile, or custom in-app WebView UA (e.g. Bigo):
+       always show the tap bridge — the button (real link + user gesture)
+       is the reliable breakout. If the tap leaves us stuck (WebView that
+       can't handle intent: URLs), show the copy-link fallback. */
     show('v-android');
     var btn=document.getElementById('chromeBtn');
     btn.href=INTENT;
@@ -105,12 +117,6 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
         navigator.clipboard.writeText(TARGET).then(ok).catch(function(){legacy();ok();});
       }else{legacy();ok();}
     });
-  }else if(isIOS){
-    show('v-ios');
-    document.getElementById('iosBtn').href=TARGET;
-  }else{
-    show('v-desktop');
-    setTimeout(function(){location.replace(TARGET);},400);
   }
 })();
 </script>
