@@ -43,15 +43,15 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
   <div id="v-android" class="hide">
     <div id="v-android-main">
       <h1>🔥 You're one tap away!</h1>
-      <p>For the fastest signup, open in <b>Chrome</b> — you'll stay logged in ✅</p>
-      <a class="btn" id="chromeBtn" href="#">⚡ Open in Chrome</a>
+      <p>For the fastest signup, open in <b>your browser</b> — you'll stay logged in ✅</p>
+      <a class="btn" id="browserBtn" href="#">⚡ Open in Browser</a>
       <a class="btn2" id="contBtn" href="#">Continue in this browser →</a>
     </div>
     <div id="v-copy" class="hide">
       <h1>📋 Copy the link</h1>
       <p>This app keeps links inside itself. <b>Copy the link</b> and paste it in Chrome — takes 5 seconds 👇</p>
       <a class="btn" id="copyBtn" href="#">📋 Copy Link</a>
-      <p class="small">Then open <b>Chrome</b> → tap the address bar → <b>Paste</b> ✅<br>Or look for <kbd>⋮</kbd> → <b>Open in browser</b> in this app's menu</p>
+      <p class="small">Then open <b>your browser</b> → tap the address bar → <b>Paste</b> ✅<br>Or look for <kbd>⋮</kbd> → <b>Open in browser</b> in this app's menu</p>
     </div>
   </div>
 
@@ -64,7 +64,7 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
 <script>
 (function(){
   var TARGET='https://lunatalks975-cell.github.io/mysite/';
-  var INTENT='intent://lunatalks975-cell.github.io/mysite/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(TARGET)+';end';
+  var INTENT='intent://lunatalks975-cell.github.io/mysite/#Intent;scheme=https;S.browser_fallback_url='+encodeURIComponent(TARGET)+';end';
   var ua=navigator.userAgent||'';
   /* Robust platform check: Bigo and other in-app WebViews may send unusual
      UAs. Only auto-redirect on CLEAR desktop browsers; every other UA
@@ -88,7 +88,7 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
        is the reliable breakout. If the tap leaves us stuck (WebView that
        can't handle intent: URLs), show the copy-link fallback. */
     show('v-android');
-    var btn=document.getElementById('chromeBtn');
+    var btn=document.getElementById('browserBtn');
     btn.href=INTENT;
     document.getElementById('contBtn').href=TARGET;
     var left=false;
@@ -105,7 +105,7 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
     var copyBtn=document.getElementById('copyBtn');
     copyBtn.addEventListener('click',function(e){
       e.preventDefault();
-      var ok=function(){copyBtn.textContent='✅ Copied! Now paste it in Chrome 👆';};
+      var ok=function(){copyBtn.textContent='✅ Copied! Now paste it in your browser 👆';};
       function legacy(){
         var ta=document.createElement('textarea');
         ta.value=TARGET;ta.style.position='fixed';ta.style.opacity='0';
