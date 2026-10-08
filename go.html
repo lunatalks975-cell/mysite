@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>💋 Meet Local Singles Online Tonight ✨ | Free to Join</title>
+<meta name="description" content="Create a free account and meet singles near you. No credit card required. 18+ only.">
+<meta property="og:title" content="💋 Meet Local Singles Online Tonight ✨ | Free to Join">
+<meta property="og:description" content="Create a free account and meet singles near you. No credit card required. 18+ only.">
+<meta property="og:image" content="https://lunatalks975-cell.github.io/mysite/og-image.jpg">
+<meta property="og:url" content="https://lunatalks975-cell.github.io/mysite/go.html">
+<meta name="theme-color" content="#0d0017">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(1200px 600px at 50% -10%,#2b0a3d 0%,#0d0017 60%);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+.card{max-width:380px;width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:32px 24px}
+.logo{font-size:22px;font-weight:800;margin-bottom:6px}
+.logo span{color:#ff4d6d}
+h1{font-size:20px;margin:14px 0 8px}
+p{font-size:14px;color:#d9c9e8;line-height:1.65;margin-bottom:14px}
+p b{color:#fff}
+.btn{display:block;background:linear-gradient(135deg,#ff4d6d,#ff8fa3);color:#fff;font-weight:800;font-size:17px;padding:15px;border-radius:14px;text-decoration:none;margin:18px 0 10px;box-shadow:0 6px 24px rgba(255,77,109,.4)}
+.btn:active{transform:scale(.97)}
+.small{font-size:12px;color:#a68fb8}
+.spin{width:38px;height:38px;border:4px solid rgba(255,255,255,.15);border-top-color:#ff4d6d;border-radius:50%;margin:18px auto;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.hide{display:none!important}
+kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-family:inherit;font-size:13px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">💜 Flirt<span>Finder</span></div>
+
+  <div id="v-real" class="hide">
+    <div class="spin"></div>
+    <p>Opening your invite…</p>
+  </div>
+
+  <div id="v-android" class="hide">
+    <h1>🔥 One tap to continue</h1>
+    <p>For the smoothest signup, open this in <b>Chrome</b> — you'll stay logged in, no re-typing passwords! ✅</p>
+    <a class="btn" id="chromeBtn" href="#">⚡ Open in Chrome</a>
+    <p class="small">Or tap <kbd>⋮</kbd> → <b>Open in browser</b></p>
+  </div>
+
+  <div id="v-ios" class="hide">
+    <h1>📱 Almost there!</h1>
+    <p>Tap <kbd>•••</kbd> at the top → <b>Open in Safari</b> for the smoothest signup — you'll stay logged in ✅</p>
+    <a class="btn" id="iosBtn" href="#">Continue →</a>
+  </div>
+
+  <div id="v-other" class="hide">
+    <div class="spin"></div>
+    <p>Opening your invite…</p>
+  </div>
+</div>
+<script>
+(function(){
+  var TARGET='https://lunatalks975-cell.github.io/mysite/';
+  var INTENT='intent://lunatalks975-cell.github.io/mysite/#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(TARGET)+';end';
+  var ua=navigator.userAgent||'';
+  var isAndroid=/Android/i.test(ua);
+  var isIOS=/iPhone|iPad|iPod/i.test(ua);
+  var inApp=/Telegram|WhatsApp|Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|Bytedance|Line|MicroMessenger|WeChat|Snapchat|Pinterest|LinkedIn|Viber/i.test(ua);
+  if(isAndroid && /; wv\)/i.test(ua)) inApp=true;
+  function show(id){document.getElementById(id).classList.remove('hide');}
+  if(!inApp){
+    show('v-real');
+    setTimeout(function(){location.replace(TARGET);},500);
+  }else if(isAndroid){
+    show('v-android');
+    document.getElementById('chromeBtn').href=INTENT;
+    setTimeout(function(){location.href=INTENT;},900);
+  }else if(isIOS){
+    show('v-ios');
+    document.getElementById('iosBtn').href=TARGET;
+  }else{
+    show('v-other');
+    setTimeout(function(){location.replace(TARGET);},600);
+  }
+})();
+</script>
+</body>
+</html>
