@@ -16,10 +16,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#2b0a3d 0%,#0d0017 60%)
 .card{max-width:380px;width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:32px 24px}
 .logo{font-size:22px;font-weight:800;margin-bottom:6px}
 .logo span{color:#ff4d6d}
-h1{font-size:20px;margin:14px 0 8px}
+h1{font-size:20px;margin:14px 0 8px;line-height:1.4}
 p{font-size:14px;color:#d9c9e8;line-height:1.65;margin-bottom:14px}
 p b{color:#fff}
-.btn{display:block;background:linear-gradient(135deg,#ff4d6d,#ff8fa3);color:#fff;font-weight:800;font-size:17px;padding:15px;border-radius:14px;text-decoration:none;margin:18px 0 10px;box-shadow:0 6px 24px rgba(255,77,109,.4)}
+.btn{display:block;background:linear-gradient(135deg,#ff4d6d,#ff8fa3);color:#fff;font-weight:800;font-size:18px;padding:17px;border-radius:14px;text-decoration:none;margin:20px 0 12px;box-shadow:0 6px 24px rgba(255,77,109,.45);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .btn:active{transform:scale(.97)}
 .small{font-size:12px;color:#a68fb8}
 .spin{width:38px;height:38px;border:4px solid rgba(255,255,255,.15);border-top-color:#ff4d6d;border-radius:50%;margin:18px auto;animation:s 1s linear infinite}
@@ -32,27 +33,22 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
 <div class="card">
   <div class="logo">💜 Flirt<span>Finder</span></div>
 
-  <div id="v-real" class="hide">
+  <div id="v-desktop" class="hide">
     <div class="spin"></div>
     <p>Opening your invite…</p>
   </div>
 
   <div id="v-android" class="hide">
-    <h1>🔥 One tap to continue</h1>
-    <p>For the smoothest signup, open this in <b>Chrome</b> — you'll stay logged in, no re-typing passwords! ✅</p>
+    <h1>🔥 You're one tap away!</h1>
+    <p>Tap below to open in <b>Chrome</b> — you'll stay logged in, signup takes seconds ✅</p>
     <a class="btn" id="chromeBtn" href="#">⚡ Open in Chrome</a>
-    <p class="small">Or tap <kbd>⋮</kbd> → <b>Open in browser</b></p>
+    <p class="small">Button not working? Tap <kbd>⋮</kbd> → <b>Open in browser</b></p>
   </div>
 
   <div id="v-ios" class="hide">
     <h1>📱 Almost there!</h1>
-    <p>Tap <kbd>•••</kbd> at the top → <b>Open in Safari</b> for the smoothest signup — you'll stay logged in ✅</p>
+    <p>Tap <kbd>•••</kbd> at the top → <b>Open in Safari</b> — you'll stay logged in, signup takes seconds ✅</p>
     <a class="btn" id="iosBtn" href="#">Continue →</a>
-  </div>
-
-  <div id="v-other" class="hide">
-    <div class="spin"></div>
-    <p>Opening your invite…</p>
   </div>
 </div>
 <script>
@@ -62,22 +58,22 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
   var ua=navigator.userAgent||'';
   var isAndroid=/Android/i.test(ua);
   var isIOS=/iPhone|iPad|iPod/i.test(ua);
-  var inApp=/Telegram|WhatsApp|Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly|Bytedance|Line|MicroMessenger|WeChat|Snapchat|Pinterest|LinkedIn|Viber/i.test(ua);
-  if(isAndroid && /; wv\)/i.test(ua)) inApp=true;
   function show(id){document.getElementById(id).classList.remove('hide');}
-  if(!inApp){
-    show('v-real');
-    setTimeout(function(){location.replace(TARGET);},500);
-  }else if(isAndroid){
+  if(isAndroid){
+    /* Always bridge on Android: in-app browsers (Custom Tabs) share Chrome's
+       UA, so UA detection can't tell them apart — the tap button is the
+       reliable breakout (user gesture + real link). */
     show('v-android');
     document.getElementById('chromeBtn').href=INTENT;
-    setTimeout(function(){location.href=INTENT;},900);
+    /* bonus auto-attempt; button remains if blocked */
+    setTimeout(function(){try{location.href=INTENT;}catch(e){}},1500);
   }else if(isIOS){
+    /* iOS cannot force-break out of in-app browsers — instructions only */
     show('v-ios');
     document.getElementById('iosBtn').href=TARGET;
   }else{
-    show('v-other');
-    setTimeout(function(){location.replace(TARGET);},600);
+    show('v-desktop');
+    setTimeout(function(){location.replace(TARGET);},400);
   }
 })();
 </script>
