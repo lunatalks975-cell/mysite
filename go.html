@@ -61,8 +61,20 @@ kbd{background:rgba(255,255,255,.14);padding:2px 8px;border-radius:6px;font-fami
 </div>
 <script>
 (function(){
-  var TARGET='https://lunatalks975-cell.github.io/mysite/';
-  var INTENT='intent://lunatalks975-cell.github.io/mysite/#Intent;scheme=https;S.browser_fallback_url='+encodeURIComponent(TARGET)+';end';
+  /* Traffic-source tagging: ?src=bigo|telegram|ig|tiktok|dm|bio|other
+     Share one masked URL per channel with its src value appended
+     (e.g. <mask>?src=bigo). The tag rides along to the landing page,
+     which stamps it into the smartlink as s1= so the network report
+     shows which channel each conversion came from. Whitelist only. */
+  var SRC_ALLOW=['bigo','telegram','ig','tiktok','dm','bio','other'];
+  var pageSrc='';
+  try{
+    var m=/[?&]src=([a-z]+)/i.exec(location.search||'');
+    if(m&&SRC_ALLOW.indexOf(m[1].toLowerCase())>-1)pageSrc=m[1].toLowerCase();
+  }catch(e){}
+  var Q=pageSrc?'?src='+pageSrc:'';
+  var TARGET='https://lunatalks975-cell.github.io/mysite/'+Q;
+  var INTENT='intent://lunatalks975-cell.github.io/mysite/'+Q+'#Intent;scheme=https;S.browser_fallback_url='+encodeURIComponent(TARGET)+';end';
   var ua=navigator.userAgent||'';
   /* Robust platform check: Bigo and other in-app WebViews may send unusual
      UAs. Only auto-redirect on CLEAR desktop browsers; every other UA

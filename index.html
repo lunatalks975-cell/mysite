@@ -937,15 +937,31 @@ const GATE_VIDEO_URL = "";
    ================================================================ */
 
 /* ---- Link resolver: per-button > per-section > master ---- */
+/* ---- Traffic-source tagging (?src=bigo|telegram|ig|tiktok|dm|bio|other) ----
+   go.html forwards its own ?src= onto the landing page URL. We stamp it
+   into the smartlink as s1= so the network report shows which channel
+   each signup came from. Whitelist only — nobody can inject junk into
+   the offer URL. No/unknown src → link stays exactly as configured. */
+const SRC_ALLOW = ["bigo", "telegram", "ig", "tiktok", "dm", "bio", "other"];
+let PAGE_SRC = "";
+try {
+  const _q = (new URLSearchParams(location.search).get("src") || "").trim().toLowerCase();
+  if (SRC_ALLOW.indexOf(_q) > -1) PAGE_SRC = _q;
+} catch (e) { /* very old browser: tagging stays off */ }
+function tagSource(url) {
+  if (!PAGE_SRC || !url) return url;
+  if (/([?&])s1=[^&]*/i.test(url)) return url.replace(/([?&])s1=[^&]*/i, "$1s1=" + PAGE_SRC);
+  return url + (url.indexOf("?") > -1 ? "&" : "?") + "s1=" + PAGE_SRC;
+}
 const _profileLinks = {};
 PROFILES.forEach((p, i) => { if ((p.link || "").trim()) _profileLinks["profile_" + i] = p.link.trim(); });
 function resolveLink(key) {
   if (key && key.indexOf("profile_") === 0) {
-    if (_profileLinks[key]) return _profileLinks[key];
-    if ((LINKS.profiles || "").trim()) return LINKS.profiles.trim();
+    if (_profileLinks[key]) return tagSource(_profileLinks[key]);
+    if ((LINKS.profiles || "").trim()) return tagSource(LINKS.profiles.trim());
   }
   const v = (LINKS[key] || "").trim();
-  return v || LINKS.default.trim();
+  return tagSource(v || LINKS.default.trim());
 }
 function goLink(url) { window.open(url, "_blank", "noopener"); }
 
@@ -974,7 +990,7 @@ document.querySelectorAll('#interest .opt').forEach(btn => {
     interestAsked = true;
     sessionStorage.setItem('ff_interest', '1');
     interestModal.classList.remove('show');
-    goLink(pendingURL || LINKS.default.trim());
+    goLink(tagSource(pendingURL || LINKS.default.trim()));
   });
 });
 interestModal.addEventListener('click', e => {
